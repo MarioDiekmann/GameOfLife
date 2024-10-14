@@ -1,0 +1,17 @@
+.cell {
+    width: 30px; /* Width of each cell */
+    height: 30px; /* Height of each cell */
+    display: inline-block; /* Align cells next to each other */
+    border: 2px solid #ddd; /* Light border around each cell */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+  }
+  
+  .cell.alive {
+    background-color: goldenrod; /* Green for living cells */
+  }
+  
+  .cell.dead {
+    background-color: blue; /* Red for dead cells */
+  }
+  
