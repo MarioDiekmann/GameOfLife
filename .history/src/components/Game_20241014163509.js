@@ -1,20 +1,14 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import Cell from "./Cell";
-import axios from "axios";
-import InputForm from "./InputForm";  
-import './Game.css';
 
 const Game = () => {
     const startingsize = 25;
-    const [size, setSize] = useState(startingsize);
+    const [size, setSize] = useState(startingsize); 
     const [epochs, setEpochs] = useState(0);
-    const [isEvolving, setIsEvolving] = useState(false);
-    const [initialPattern, setInitialPattern] = useState([]);
-
-    const [isFormVisible, setIsFormVisible] = useState(false); // State to control form visibility
+    const [isEvolving, setIsEvolving] = useState(false); 
 
     const initGrid = () => Array.from({ length: size }, () => Array(size).fill(false));
-    const [grid, setGrid] = useState(initGrid());
+    const [grid, setGrid] = useState(initGrid()); 
 
     const previousGridRef = useRef(grid); // Reference to hold the previous grid
 
@@ -30,22 +24,25 @@ const Game = () => {
     const resetGrid = () => {
         setIsEvolving(false);
         setEpochs(0);
+    
+        // Temporarily store the starting size in a state to trigger reset
         setSize(prevSize => {
+            // Directly reset the grid using the updated size
             const newGrid = Array.from({ length: startingsize }, () => Array(startingsize).fill(false));
-            setGrid(newGrid); 
-            setInitialPattern(newGrid);
-            return startingsize;
+            setGrid(newGrid);
+            return startingsize; // Update size after grid reset
         });
     };
+    
 
     const renderGrid = () => {
         return grid.map((row, rowIndex) => (
             <div key={rowIndex} className="row">
                 {row.map((cell, colIndex) => (
-                    <Cell
-                        key={`${rowIndex}-${colIndex}`}
-                        isAlive={cell}
-                        onClick={() => toggleCellState(rowIndex, colIndex)}
+                    <Cell 
+                        key={`${rowIndex}-${colIndex}`} 
+                        isAlive={cell} 
+                        onClick={() => toggleCellState(rowIndex, colIndex)} 
                     />
                 ))}
             </div>
@@ -53,11 +50,11 @@ const Game = () => {
     };
 
     const countNeighboursAlive = useCallback((row, col) => {
-        let count = 0;
+        let count = 0; 
         for (let i = row - 1; i <= row + 1; i++) {
             for (let j = col - 1; j <= col + 1; j++) {
                 if ((i >= 0 && i < size) && (j >= 0 && j < size) && !(i === row && j === col)) {
-                    count += grid[i][j] ? 1 : 0;
+                    count += grid[i][j] ? 1 : 0; // Increment if alive
                 }
             }
         }
@@ -72,37 +69,8 @@ const Game = () => {
             })
         );
         setGrid(newGrid);
-        return newGrid;
+        return newGrid; // Return the new grid for comparison
     }, [countNeighboursAlive, grid]);
-
-    const saveInitialPattern = () => {
-        const deepCopy = grid.map(row => row.slice());
-        setInitialPattern(deepCopy); // Save current grid as the initial pattern
-    };
-
-    const runEpoch = useCallback(() => {
-        const prevGrid = previousGridRef.current;
-        const newGrid = updateGrid();
-
-        const gridsAreEqual = prevGrid.every((row, i) =>
-            row.every((cell, j) => cell === newGrid[i][j])
-        );
-
-        if (gridsAreEqual) {
-            setIsEvolving(false);
-            alert("You reached a stillstand");
-            return true;
-        }
-
-        const indicesAlive = checkEdges(); // Check if we need to expand the grid
-        if (indicesAlive.length !== 0) {
-            expandGrid(indicesAlive);
-        }
-
-        setEpochs(prevEpochs => prevEpochs + 1);
-        previousGridRef.current = newGrid;
-        return false;
-    }, [updateGrid]);
 
     const checkEdges = useCallback(() => {
         const indicesAlive = [];
@@ -137,12 +105,12 @@ const Game = () => {
     const expandGrid = useCallback((indicesAlive) => {
         setGrid(prevGrid => {
             const newSize = 2 * size; // Double the size
-            const newGrid = Array.from({ length: newSize }, () => Array(newSize).fill(false));
-
+            const newGrid = Array.from({ length: newSize }, () => Array(newSize).fill(false)); 
+    
             // Calculate the offset to center the old grid in the new one
             const rowOffset = Math.floor((newSize - size) / 2);
             const colOffset = Math.floor((newSize - size) / 2);
-
+    
             // Copy the existing grid to the center of the new grid
             for (let row = 0; row < size; row++) {  
                 for (let col = 0; col < size; col++) {  
@@ -151,29 +119,54 @@ const Game = () => {
                     }
                 }
             }
-
+    
             // Handle indicesAlive and place the alive cells correctly
             for (const [row, col] of indicesAlive) {
                 let newRow = row;
                 let newCol = col;
-
+    
                 // Adjust row and col if they are outside the original grid
                 if (row === -1) newRow = rowOffset - 1;
                 if (col === -1) newCol = colOffset - 1;
-
+    
                 newRow += rowOffset;
                 newCol += colOffset;
-
+    
                 // Make sure the calculated newRow and newCol are within bounds
                 if (newRow >= 0 && newRow < newSize && newCol >= 0 && newCol < newSize) {
                     newGrid[newRow][newCol] = true;  // Mark the cell as alive in the new grid
                 }
             }
-
+    
             setSize(newSize);  // Update size to the new expanded size
             return newGrid;
         });
     }, [size]);
+    
+
+    const runEpoch = useCallback(() => {
+        const prevGrid = previousGridRef.current;
+        const newGrid = updateGrid(); // Get updated grid after epoch
+
+        const gridsAreEqual = prevGrid.every((row, i) =>
+            row.every((cell, j) => cell === newGrid[i][j])
+        );
+
+        if (gridsAreEqual) {
+            setIsEvolving(false);
+            alert("You reached a stillstand");
+            return true;
+        }
+
+        const indicesAlive = checkEdges();
+        if (indicesAlive.length !== 0) {
+            expandGrid(indicesAlive);
+        }
+
+        setEpochs(prevEpochs => prevEpochs + 1);
+        previousGridRef.current = newGrid; // Update the reference to the latest grid state
+        return false;
+    }, [checkEdges, expandGrid, updateGrid]);
 
     useEffect(() => {
         if (!isEvolving) return;
@@ -192,49 +185,22 @@ const Game = () => {
                 setIsEvolving(false);
                 clearInterval(interval);
             }
-        }, 2000);
+        }, 2000); 
 
-        return () => clearInterval(interval);
+        return () => clearInterval(interval); 
     }, [isEvolving, runEpoch]);
 
     const startEvolution = () => {
-        previousGridRef.current = grid;
+        previousGridRef.current = grid; // Set initial grid before evolution
         setIsEvolving(!isEvolving);
-        saveInitialPattern(); // Save the pattern before starting evolution
-    };
-
-    const stopEvolution = () => {
-        previousGridRef.current = grid;
-        setIsEvolving(!isEvolving);
-    };
-
-    const closeForm = () => {
-        setIsFormVisible(false); // Hide the form when pattern is saved
-    };
-
-    const makeFormVisible = () => {
-        setIsFormVisible(true);
     };
 
     return (
         <div>
             {renderGrid()}
-            <button onClick={isEvolving ? stopEvolution : startEvolution}>
-                {isEvolving ? "Stop Evolution" : "Start Evolution"}
-            </button>
+            <button onClick={startEvolution}>{isEvolving ? "Stop Evolution" : "Start Evolution"}</button>
             <button className="reset-btn" onClick={resetGrid}>Reset Grid</button>
             <div>EPOCHS: {epochs}</div>
-
-            <button onClick={makeFormVisible}>Save Pattern</button>
-
-            {/* Show the form conditionally */}
-            {isFormVisible && (
-                <div className="popup-overlay">
-                    <div className="popup-content">
-                        <InputForm pattern={initialPattern} onSubmit={closeForm} />
-                    </div>
-                </div>
-            )}
         </div>
     );
 };
