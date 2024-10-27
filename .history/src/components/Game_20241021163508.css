@@ -26,7 +26,7 @@ body.modal-open {
 
 .banner {
     background-color: black;
-    padding: 10px 20px; /* Adjusted padding for a tighter fit */
+    padding: 10px 20px; /* Adjust padding for spacing */
     display: inline-block; /* Makes the banner fit the text */
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
@@ -34,13 +34,11 @@ body.modal-open {
 }
 
 .banner h1 {
-    color: white;
+    color: white; /* Ensure the text is white */
     font-size: 2.5em; /* Slightly reduced font size for better fit */
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8); /* Adjust shadow to make text stand out */
     margin: 0; /* Removes default margin */
 }
-
-
 
 
 

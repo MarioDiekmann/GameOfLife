@@ -1,7 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const dotenv = require('dotenv');
+const dotenv = require('dotenv'); 
+const User = require('./models/User'); 
+const jwt = require('jsonwebtoken');
 
 // Load environment variables
 dotenv.config();
@@ -45,6 +47,78 @@ app.post('/api/savePattern', async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
+app.get('/api/displayPattern/:name', async (req, res) => {
+  try {
+    const name = req.params.name;  // Accessing the name from the URL
+    const pattern = await InitialPattern.findOne({ Name: name });
+
+    if (pattern) {
+      res.status(200).json(pattern);  // Send the found pattern as JSON with status 200
+    } else {
+      res.status(404).json({ error: 'Pattern not found' });  // Return 404 if pattern not found
+    }
+  } catch (error) {
+    console.error('Error finding pattern:', error);
+    res.status(500).json({ error: 'Server error' });  // Return server error in case of failure
+  }
+});
+
+
+app.post('/api/register', async (req, res) => { // Add the leading slash in the route path
+  try {
+    const { username, password, joindate } = req.body; // Use req.body instead of req.params
+
+    // Check if the user already exists
+    const existingUser = await User.findOne({ username: username });
+
+    if (!existingUser) {
+      // Create a new user
+      const newUser = new User({ username, password, joindate });
+      await newUser.save();
+
+      return res.status(201).json({ message: 'User created successfully' });
+    } else {
+      return res.status(409).json({ error: 'User already exists' });
+    }
+  } catch (error) {
+    console.error('Error registering user:', error);
+    return res.status(500).json({ error: 'Server error' });
+  }
+});
+
+
+app.post('/api/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    const user = await User.findOne({ username, password });
+
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid Username or Password' });
+    }
+
+    const token = jwt.sign(
+      { userId: user._id, username: user.username },
+      'bullshit-key',
+      { expiresIn: '10m' }
+    );
+
+    res.status(200).json({ message: 'Login successful', token: token });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+
+
+
 
 // Start the server
 app.listen(port, () => {

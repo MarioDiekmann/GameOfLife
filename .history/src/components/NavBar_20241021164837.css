@@ -1,0 +1,31 @@
+.navbar {
+    background-color: black;            /* Black background */
+    color: white;                       /* White text color */
+    padding: 20px;                      /* Padding around the content */
+    width: 200px;                       /* Set width for the navbar */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8); /* Add shadow */
+    border-radius: 5px;                /* Rounded corners */
+    position: fixed;                    /* Fixed positioning */
+    height: 100%;                       /* Full height */
+}
+
+.navbar h2 {
+    text-align: center;                 /* Center header text */
+    margin-bottom: 20px;                /* Space below the header */
+}
+
+.navbar ul {
+    list-style-type: none;              /* Remove default list styles */
+    padding: 0;                         /* Remove padding */
+}
+
+.navbar li {
+    padding: 10px;                      /* Padding for each item */
+    cursor: pointer;                    /* Pointer cursor on hover */
+    text-align: center;                 /* Center text */
+    transition: background-color 0.3s;  /* Smooth background change */
+}
+
+.navbar li:hover {
+    background-color: #444;             /* Change background on hover */
+}

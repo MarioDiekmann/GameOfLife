@@ -3,10 +3,7 @@ import Cell from "./Cell";
 import axios from "axios";
 import InputForm from "./InputForm";  
 import './Game.css'; 
-import NavBar from "./NavBar"; 
-import LoadPatternForm from "./LoadPatternForm"; 
-import RegistrationForm from "./RegistrationForm"; 
-import LoginForm from "./LoginForm";
+import NavBar from "./NavBar";
 
 const Game = () => {
     const startingsize = 25;
@@ -15,10 +12,8 @@ const Game = () => {
     const [isEvolving, setIsEvolving] = useState(false);
     const [initialPattern, setInitialPattern] = useState([]);
 
-    const [isFormVisible, setIsFormVisible] = useState(false); // State to control form visibility 
-    const [patternRequested, setPatternRequested] = useState(false);
-    const [registrationRequested, setRegistrationRequested] = useState(false);
-    const [loginRequested, setLoginRequested] = useState(false);
+    const [isFormVisible, setIsFormVisible] = useState(false); // State to control form visibility
+
     const initGrid = () => Array.from({ length: size }, () => Array(size).fill(false));
     const [grid, setGrid] = useState(initGrid());
 
@@ -85,6 +80,30 @@ const Game = () => {
         const deepCopy = grid.map(row => row.slice());
         setInitialPattern(deepCopy); // Save current grid as the initial pattern
     };
+
+    const runEpoch = useCallback(() => {
+        const prevGrid = previousGridRef.current;
+        const newGrid = updateGrid();
+
+        const gridsAreEqual = prevGrid.every((row, i) =>
+            row.every((cell, j) => cell === newGrid[i][j])
+        );
+
+        if (gridsAreEqual) {
+            setIsEvolving(false);
+            alert("You reached a stillstand");
+            return true;
+        }
+
+        const indicesAlive = checkEdges(); // Check if we need to expand the grid
+        if (indicesAlive.length !== 0) {
+            expandGrid(indicesAlive);
+        }
+
+        setEpochs(prevEpochs => prevEpochs + 1);
+        previousGridRef.current = newGrid;
+        return false;
+    }, [updateGrid]);
 
     const checkEdges = useCallback(() => {
         const indicesAlive = [];
@@ -157,32 +176,6 @@ const Game = () => {
         });
     }, [size]);
 
-    const runEpoch = useCallback(() => {
-        const prevGrid = previousGridRef.current;
-        const newGrid = updateGrid();
-
-        const gridsAreEqual = prevGrid.every((row, i) =>
-            row.every((cell, j) => cell === newGrid[i][j])
-        );
-
-        if (gridsAreEqual) {
-            setIsEvolving(false);
-            alert("You reached a stillstand");
-            return true;
-        }
-
-        const indicesAlive = checkEdges(); // Check if we need to expand the grid
-        if (indicesAlive.length !== 0) {
-            expandGrid(indicesAlive);
-        }
-
-        setEpochs(prevEpochs => prevEpochs + 1);
-        previousGridRef.current = newGrid;
-        return false;
-    }, [checkEdges, expandGrid, updateGrid]);
-
-    
-
     useEffect(() => {
         if (!isEvolving) return;
 
@@ -220,47 +213,14 @@ const Game = () => {
         setIsFormVisible(false); // Hide the form when pattern is saved
     };
 
-    const closeRequest = ()=>{
-        setPatternRequested(false);
-    }
-
-    const closeRegistration = ()=>{
-        setRegistrationRequested(false);
-    }
-
-    const closeLogin = ()=>{
-        setLoginRequested(false)
-    }
-
     const makeFormVisible = () => {
         setIsFormVisible(true);
     };
 
-    const makeRequestVisible = ()=>{
-        setPatternRequested(true);
-    }
-
-    const makeRegistrationVisible = ()=>{
-        setRegistrationRequested(true);
-    } 
-
-    const makeLoginVisible = ()=>{
-        setLoginRequested(true);
-    }
-
-    const retrievePattern = (pattern)=>{
-        initGrid();
-        setGrid(pattern); 
-        setInitialPattern(pattern);
-        setEpochs(0); 
-        setIsEvolving(false); 
-        setPatternRequested(false); 
-    }
-
     return (
-        <div style={{ display: 'flex', height: '100vh' }}>
-            <NavBar /> {/* Keep the NavBar on the left */}
-            <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <NavBar /> {/* Add NavBar here */}
+            <div style={{ marginLeft: '220px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div className="banner">
                     <h1>Game of Life</h1>
                 </div>
@@ -271,10 +231,8 @@ const Game = () => {
                 </button>
                 <button className="reset-btn" onClick={resetGrid}>Reset Grid</button>
                 <div>EPOCHS: {epochs}</div>
-                <button onClick={makeFormVisible}>Save Pattern</button> 
-                <button onClick={makeRequestVisible}>Retrieve Pattern</button> 
-                <button onClick={makeRegistrationVisible}>Register</button> 
-                <button onClick={makeLoginVisible}>Login</button>
+                <button onClick={makeFormVisible}>Save Pattern</button>
+
                 {/* Show the form conditionally */}
                 {isFormVisible && (
                     <div className="popup-overlay">
@@ -283,31 +241,6 @@ const Game = () => {
                         </div>
                     </div>
                 )}
-
-                {/* Show the form conditionally */}
-                {patternRequested && (
-                    <div className="popup-overlay">
-                        <div className="popup-content">
-                            <LoadPatternForm dataHandling={retrievePattern}  onSubmit={closeRequest} />
-                        </div>
-                    </div>
-                )}
-
-                {registrationRequested && (
-                    <div className="popup-overlay">
-                        <div className="popup-content">
-                            <RegistrationForm onSubmit={closeRegistration} />
-                        </div>
-                    </div>
-                )}  
-
-                {loginRequested && (
-                    <div className="popup-overlay">
-                        <div className="popup-content">
-                            <LoginForm onSubmit={closeLogin} />
-                        </div>
-                    </div>
-                )} 
             </div>
         </div>
     );

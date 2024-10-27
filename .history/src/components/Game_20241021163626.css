@@ -25,21 +25,19 @@ body.modal-open {
 }
 
 .banner {
-    background-color: black;
-    padding: 10px 20px; /* Adjusted padding for a tighter fit */
-    display: inline-block; /* Makes the banner fit the text */
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-    border-radius: 5px; /* Optional: Adds rounded corners */
+    background-color: black;        /* Background color */
+    padding: 10px 20px;            /* Adjust padding for spacing */
+    display: inline-block;          /* Makes the banner fit the text */
+    text-align: center;             /* Center the text */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6); /* Shadow for depth */
+    border-radius: 5px;            /* Optional: Adds rounded corners */
 }
 
 .banner h1 {
-    color: white;
-    font-size: 2.5em; /* Slightly reduced font size for better fit */
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
-    margin: 0; /* Removes default margin */
+    color: white;                   /* White text color */
+    font-size: 3em;                /* Font size */
+    margin: 0;                     /* Removes default margin */
 }
-
 
 
 

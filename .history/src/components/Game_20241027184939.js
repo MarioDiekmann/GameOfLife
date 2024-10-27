@@ -304,7 +304,7 @@ const Game = () => {
                 {loginRequested && (
                     <div className="popup-overlay">
                         <div className="popup-content">
-                            <LoginForm onSubmit={closeLogin} />
+                            <RegistrationForm onSubmit={closeLogin} />
                         </div>
                     </div>
                 )} 

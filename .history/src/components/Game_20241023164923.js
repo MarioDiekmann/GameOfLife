@@ -4,9 +4,7 @@ import axios from "axios";
 import InputForm from "./InputForm";  
 import './Game.css'; 
 import NavBar from "./NavBar"; 
-import LoadPatternForm from "./LoadPatternForm"; 
-import RegistrationForm from "./RegistrationForm"; 
-import LoginForm from "./LoginForm";
+import LoadPatternForm from "./LoadPatternForm";
 
 const Game = () => {
     const startingsize = 25;
@@ -17,8 +15,7 @@ const Game = () => {
 
     const [isFormVisible, setIsFormVisible] = useState(false); // State to control form visibility 
     const [patternRequested, setPatternRequested] = useState(false);
-    const [registrationRequested, setRegistrationRequested] = useState(false);
-    const [loginRequested, setLoginRequested] = useState(false);
+
     const initGrid = () => Array.from({ length: size }, () => Array(size).fill(false));
     const [grid, setGrid] = useState(initGrid());
 
@@ -224,14 +221,6 @@ const Game = () => {
         setPatternRequested(false);
     }
 
-    const closeRegistration = ()=>{
-        setRegistrationRequested(false);
-    }
-
-    const closeLogin = ()=>{
-        setLoginRequested(false)
-    }
-
     const makeFormVisible = () => {
         setIsFormVisible(true);
     };
@@ -240,16 +229,8 @@ const Game = () => {
         setPatternRequested(true);
     }
 
-    const makeRegistrationVisible = ()=>{
-        setRegistrationRequested(true);
-    } 
-
-    const makeLoginVisible = ()=>{
-        setLoginRequested(true);
-    }
-
     const retrievePattern = (pattern)=>{
-        initGrid();
+        resetGrid();
         setGrid(pattern); 
         setInitialPattern(pattern);
         setEpochs(0); 
@@ -272,9 +253,7 @@ const Game = () => {
                 <button className="reset-btn" onClick={resetGrid}>Reset Grid</button>
                 <div>EPOCHS: {epochs}</div>
                 <button onClick={makeFormVisible}>Save Pattern</button> 
-                <button onClick={makeRequestVisible}>Retrieve Pattern</button> 
-                <button onClick={makeRegistrationVisible}>Register</button> 
-                <button onClick={makeLoginVisible}>Login</button>
+                <button onClick={makeRequestVisible}>Retrieve Pattern</button>
                 {/* Show the form conditionally */}
                 {isFormVisible && (
                     <div className="popup-overlay">
@@ -292,22 +271,6 @@ const Game = () => {
                         </div>
                     </div>
                 )}
-
-                {registrationRequested && (
-                    <div className="popup-overlay">
-                        <div className="popup-content">
-                            <RegistrationForm onSubmit={closeRegistration} />
-                        </div>
-                    </div>
-                )}  
-
-                {loginRequested && (
-                    <div className="popup-overlay">
-                        <div className="popup-content">
-                            <LoginForm onSubmit={closeLogin} />
-                        </div>
-                    </div>
-                )} 
             </div>
         </div>
     );

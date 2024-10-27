@@ -5,8 +5,7 @@ import InputForm from "./InputForm";
 import './Game.css'; 
 import NavBar from "./NavBar"; 
 import LoadPatternForm from "./LoadPatternForm"; 
-import RegistrationForm from "./RegistrationForm"; 
-import LoginForm from "./LoginForm";
+import RegistrationForm from "./RegistrationForm";
 
 const Game = () => {
     const startingsize = 25;
@@ -18,7 +17,6 @@ const Game = () => {
     const [isFormVisible, setIsFormVisible] = useState(false); // State to control form visibility 
     const [patternRequested, setPatternRequested] = useState(false);
     const [registrationRequested, setRegistrationRequested] = useState(false);
-    const [loginRequested, setLoginRequested] = useState(false);
     const initGrid = () => Array.from({ length: size }, () => Array(size).fill(false));
     const [grid, setGrid] = useState(initGrid());
 
@@ -224,14 +222,6 @@ const Game = () => {
         setPatternRequested(false);
     }
 
-    const closeRegistration = ()=>{
-        setRegistrationRequested(false);
-    }
-
-    const closeLogin = ()=>{
-        setLoginRequested(false)
-    }
-
     const makeFormVisible = () => {
         setIsFormVisible(true);
     };
@@ -242,10 +232,6 @@ const Game = () => {
 
     const makeRegistrationVisible = ()=>{
         setRegistrationRequested(true);
-    } 
-
-    const makeLoginVisible = ()=>{
-        setLoginRequested(true);
     }
 
     const retrievePattern = (pattern)=>{
@@ -273,8 +259,7 @@ const Game = () => {
                 <div>EPOCHS: {epochs}</div>
                 <button onClick={makeFormVisible}>Save Pattern</button> 
                 <button onClick={makeRequestVisible}>Retrieve Pattern</button> 
-                <button onClick={makeRegistrationVisible}>Register</button> 
-                <button onClick={makeLoginVisible}>Login</button>
+                <button onClick={makeRegistrationVisible}>Register</button>
                 {/* Show the form conditionally */}
                 {isFormVisible && (
                     <div className="popup-overlay">
@@ -296,18 +281,10 @@ const Game = () => {
                 {registrationRequested && (
                     <div className="popup-overlay">
                         <div className="popup-content">
-                            <RegistrationForm onSubmit={closeRegistration} />
+                            <LoadPatternForm onSubmit={closeRequest} />
                         </div>
                     </div>
                 )}  
-
-                {loginRequested && (
-                    <div className="popup-overlay">
-                        <div className="popup-content">
-                            <LoginForm onSubmit={closeLogin} />
-                        </div>
-                    </div>
-                )} 
             </div>
         </div>
     );
