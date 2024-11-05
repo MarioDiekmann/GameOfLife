@@ -33,14 +33,14 @@ const InitialPattern = require('./models/InitialPattern');
 // API route to save pattern
 app.post('/api/savePattern', async (req, res) => {
   try {
-    const { Name, Pattern, CreatedAt } = req.body;
+    const { Name, Pattern, CreatedAt, User} = req.body;
 
-    if (!Name || !Pattern || !CreatedAt) {
+    if (!Name || !Pattern || !CreatedAt || !User) {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
     // Create a new pattern instance
-    const newPattern = new InitialPattern({ Name, Pattern, CreatedAt });
+    const newPattern = new InitialPattern({ Name, Pattern, CreatedAt, User});
     await newPattern.save();
     res.status(201).json({ message: 'Pattern created successfully' });
   } catch (error) {
@@ -48,10 +48,28 @@ app.post('/api/savePattern', async (req, res) => {
   }
 });
 
-app.get('/api/displayPattern/:name', async (req, res) => {
+app.get('/api/displayPatterns/:userId', async (req, res) => {
   try {
-    const name = req.params.name;  // Accessing the name from the URL
-    const pattern = await InitialPattern.findOne({ Name: name });
+    const userId = req.params.userId; // Accessing user ID from the URL
+    const patterns = await InitialPattern.find({ User: userId });
+
+    if (patterns) {
+      res.status(200).json(patterns);  // Send the found pattern as JSON with status 200
+    } else {
+      res.status(404).json({ error: 'Pattern not found' });  // Return 404 if pattern not found
+    }
+  } catch (error) {
+    console.error('Error finding patterns:', error);
+    res.status(500).json({ error: 'Server error' });  // Return server error in case of failure
+  }
+});
+
+
+app.get('/api/displayPattern/:name/:userId', async (req, res) => {
+  try {
+    const name = req.params.name
+	const userId = req.params.userId; // Accessing user ID from the URL
+    const pattern = await InitialPattern.findOne({ Name: name, User: userId });
 
     if (pattern) {
       res.status(200).json(pattern);  // Send the found pattern as JSON with status 200
@@ -59,10 +77,11 @@ app.get('/api/displayPattern/:name', async (req, res) => {
       res.status(404).json({ error: 'Pattern not found' });  // Return 404 if pattern not found
     }
   } catch (error) {
-    console.error('Error finding pattern:', error);
+    console.error('Error finding patterns:', error);
     res.status(500).json({ error: 'Server error' });  // Return server error in case of failure
   }
 });
+
 
 
 app.post('/api/register', async (req, res) => { // Add the leading slash in the route path
@@ -105,7 +124,7 @@ app.post('/api/login', async (req, res) => {
     const token = jwt.sign(
       { userId: user._id, username: user.username },
       'bullshit-key',
-      { expiresIn: '10m' }
+      { expiresIn: '3m' }
     );
 
     res.status(200).json({ message: 'Login successful', token: token });

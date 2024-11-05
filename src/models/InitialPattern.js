@@ -14,6 +14,12 @@ const InitialPatternSchema = new mongoose.Schema({
   CreatedAt: {
     type: Date,
     default: Date.now
+  },
+  
+  User: {
+	  type: mongoose.Schema.Types.ObjectId,
+        ref: 'User', 
+        required: true
   }
   
 });

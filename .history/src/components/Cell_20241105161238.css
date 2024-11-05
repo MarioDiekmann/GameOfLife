@@ -1,0 +1,14 @@
+.cell {
+  display: inline-block;
+  border: 2px solid #ddd;
+  box-sizing: border-box;
+  transition: background-color 0.3s;
+}
+
+.cell.alive {
+  background-color: black;
+}
+
+.cell.dead {
+  background-color: white;
+}
