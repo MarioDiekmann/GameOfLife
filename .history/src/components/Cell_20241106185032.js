@@ -5,22 +5,25 @@ const Cell = ({ isAlive, onClick, numResizes }) => {
   const [cellSize, setCellSize] = useState(0);
 
   useEffect(() => {
+    // Update cell size based on screen width and height
     const updateCellSize = () => {
-      // Dynamically calculate the grid size, but limit cell size for smaller screens
-      const gridWidth = Math.min(window.innerWidth * 0.8, 600); // Cap width to 600px on larger screens
-      const gridHeight = Math.min(window.innerHeight * 0.8, 600); // Cap height to 600px on larger screens
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
 
-      const cellsPerRow = Math.floor(gridWidth / 30);
-      const cellsPerColumn = Math.floor(gridHeight / 30);
+      // Calculate the number of cells that can fit horizontally and vertically
+      const cellsPerRow = Math.floor(screenWidth / 20); // 20px is the minimum width for a cell
+      const cellsPerColumn = Math.floor(screenHeight / 20); // 20px is the minimum height for a cell
 
-      let screenCellSize = Math.min(gridWidth / cellsPerRow, gridHeight / cellsPerColumn);
-      screenCellSize = Math.max(screenCellSize, 10); // Ensure cells don’t get smaller than 10px
+      // Choose the smaller of the two values to ensure the grid fits within the screen
+      const screenCellSize = Math.min(screenWidth / cellsPerRow, screenHeight / cellsPerColumn);
 
+      // Apply resizing logic with numResizes
       const finalCellSize = screenCellSize / Math.pow(2, numResizes);
 
       setCellSize(finalCellSize);
     };
 
+    // Call once on mount and whenever the window is resized
     updateCellSize();
     window.addEventListener('resize', updateCellSize);
 

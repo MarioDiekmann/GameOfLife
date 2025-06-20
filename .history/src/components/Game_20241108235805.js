@@ -297,12 +297,8 @@ const Game = () => {
                             {isEvolving ? "Stop Evolution" : "Start Evolution"}
                         </button>
                         <button className="button reset-btn" onClick={resetGrid}>Reset Grid</button>
-                        <button className="button" onClick={makeFormVisible} disabled={!tokenPresent} title={!tokenPresent ? "Login required to save patterns" : ""}>
-                                Save Pattern
-                        </button>
-                        <button className="button" onClick={makeRequestVisible} disabled={!tokenPresent} title={!tokenPresent ? "Login required to retrieve patterns" : ""}>
-                                Retrieve Pattern
-                        </button>
+                        <button className="button" onClick={makeFormVisible} disabled={!tokenPresent}>Save Pattern</button>
+                        <button className="button" onClick={makeRequestVisible} disabled={!tokenPresent}>Retrieve Pattern</button>
                         <button className="button" onClick={makeRegistrationVisible}>Register</button>
                         <button className="button" onClick={makeLoginVisible}>{token ? "Logout" : "Login"}</button>
                     </div>

@@ -65,19 +65,18 @@ const Game = () => {
 
     const renderGrid = () => {
         return grid.map((row, rowIndex) => (
-          <div key={rowIndex} className="row">
-            {row.map((cell, colIndex) => (
-              <Cell
-                key={`${rowIndex}-${colIndex}`}
-                isAlive={cell}
-                onClick={() => toggleCellState(rowIndex, colIndex)}
-                numResizes={numResizes}
-              />
-            ))}
-          </div>
+            <div key={rowIndex} className="row">
+                {row.map((cell, colIndex) => (
+                    <Cell
+                        key={`${rowIndex}-${colIndex}`}
+                        isAlive={cell}
+                        onClick={() => toggleCellState(rowIndex, colIndex)}
+                        numResizes = {numResizes}
+                    />
+                ))}
+            </div>
         ));
-      };
-      
+    };
 
     const countNeighboursAlive = useCallback((row, col) => {
         let count = 0;
@@ -280,66 +279,62 @@ const Game = () => {
         
     };
 
-    
-
     return (
-        <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
-            <NavBar />
-            <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', overflowY: 'auto' }}>
-                <div className="banner">
-                    <h1>Game of Life</h1>
-                </div>
-                <br/>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexGrow: 1 }}>
-                    {renderGrid()}
-                    <div className="button-container">
-                        <button className="button" onClick={isEvolving ? stopEvolution : startEvolution}>
-                            {isEvolving ? "Stop Evolution" : "Start Evolution"}
-                        </button>
-                        <button className="button reset-btn" onClick={resetGrid}>Reset Grid</button>
-                        <button className="button" onClick={makeFormVisible} disabled={!tokenPresent} title={!tokenPresent ? "Login required to save patterns" : ""}>
-                                Save Pattern
-                        </button>
-                        <button className="button" onClick={makeRequestVisible} disabled={!tokenPresent} title={!tokenPresent ? "Login required to retrieve patterns" : ""}>
-                                Retrieve Pattern
-                        </button>
-                        <button className="button" onClick={makeRegistrationVisible}>Register</button>
-                        <button className="button" onClick={makeLoginVisible}>{token ? "Logout" : "Login"}</button>
-                    </div>
-                </div>
-
-                {/* Conditional form popups */}
-                {isFormVisible && (
-                    <div className="popup-overlay">
-                        <div className="popup-content">
-                            <InputForm pattern={initialPattern} onSubmit={closeForm} />
-                        </div>
-                    </div>
-                )}
-                {patternRequested && (
-                    <div className="popup-overlay">
-                        <div className="popup-content">
-                            <LoadPatternForm onSubmit={closeForm} dataHandling={retrievePattern} />
-                        </div>
-                    </div>
-                )}
-                {registrationRequested && (
-                    <div className="popup-overlay">
-                        <div className="popup-content">
-                            <RegistrationForm onSubmit={closeForm} />
-                        </div>
-                    </div>
-                )}
-                {loginRequested && (
-                    <div className="popup-overlay">
-                        <div className="popup-content">
-                            <LoginForm onSubmit={closeLogin} />
-                        </div>
-                    </div>
-                )}
+    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+        <NavBar />
+        <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', overflow: 'hidden' }}>
+            <div className="banner">
+                <h1>Game of Life</h1>
             </div>
+            <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', overflow: 'hidden' }}>
+                <div style={{ flexGrow: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    {renderGrid()}
+                </div>
+                <div className="button-container">
+                    <button className="button" onClick={isEvolving ? stopEvolution : startEvolution}>
+                        {isEvolving ? "Stop Evolution" : "Start Evolution"}
+                    </button>
+                    <button className="button reset-btn" onClick={resetGrid}>Reset Grid</button>
+                    <button className="button" onClick={makeFormVisible} disabled={!tokenPresent}>Save Pattern</button>
+                    <button className="button" onClick={makeRequestVisible} disabled={!tokenPresent}>Retrieve Pattern</button>
+                    <button className="button" onClick={makeRegistrationVisible}>Register</button>
+                    <button className="button" onClick={makeLoginVisible}>{token ? "Logout" : "Login"}</button>
+                </div>
+            </div>
+
+            {/* Conditional form popups */}
+            {isFormVisible && (
+                <div className="popup-overlay">
+                    <div className="popup-content">
+                        <InputForm pattern={initialPattern} onSubmit={closeForm} />
+                    </div>
+                </div>
+            )}
+            {patternRequested && (
+                <div className="popup-overlay">
+                    <div className="popup-content">
+                        <LoadPatternForm onSubmit={closeForm} dataHandling={retrievePattern} />
+                    </div>
+                </div>
+            )}
+            {registrationRequested && (
+                <div className="popup-overlay">
+                    <div className="popup-content">
+                        <RegistrationForm onSubmit={closeForm} />
+                    </div>
+                </div>
+            )}
+            {loginRequested && (
+                <div className="popup-overlay">
+                    <div className="popup-content">
+                        <LoginForm onSubmit={closeLogin} />
+                    </div>
+                </div>
+            )}
         </div>
-    );
+    </div>
+);
+
     
 
 };

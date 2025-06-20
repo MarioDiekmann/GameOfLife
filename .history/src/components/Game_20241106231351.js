@@ -65,19 +65,18 @@ const Game = () => {
 
     const renderGrid = () => {
         return grid.map((row, rowIndex) => (
-          <div key={rowIndex} className="row">
-            {row.map((cell, colIndex) => (
-              <Cell
-                key={`${rowIndex}-${colIndex}`}
-                isAlive={cell}
-                onClick={() => toggleCellState(rowIndex, colIndex)}
-                numResizes={numResizes}
-              />
-            ))}
-          </div>
+            <div key={rowIndex} className="row">
+                {row.map((cell, colIndex) => (
+                    <Cell
+                        key={`${rowIndex}-${colIndex}`}
+                        isAlive={cell}
+                        onClick={() => toggleCellState(rowIndex, colIndex)}
+                        numResizes = {numResizes}
+                    />
+                ))}
+            </div>
         ));
-      };
-      
+    };
 
     const countNeighboursAlive = useCallback((row, col) => {
         let count = 0;
@@ -280,34 +279,72 @@ const Game = () => {
         
     };
 
-    
-
     return (
         <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
             <NavBar />
-            <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', overflowY: 'auto' }}>
+            <div style={{ 
+                flexGrow: 1, 
+                display: 'flex', 
+                flexDirection: 'column', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                overflow: 'hidden',
+                padding: '20px',
+            }}>
                 <div className="banner">
                     <h1>Game of Life</h1>
                 </div>
-                <br/>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexGrow: 1 }}>
-                    {renderGrid()}
-                    <div className="button-container">
+                <div 
+                    style={{ 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        alignItems: 'center', 
+                        justifyContent: 'center',
+                        maxHeight: '80vh',
+                        maxWidth: '80vw',
+                        width: '100%',
+                    }}
+                >
+                    {/* Resizing grid wrapper to maintain a square */}
+                    <div 
+                        style={{
+                            width: '100%',
+                            maxWidth: '500px', // Cap maximum size
+                            aspectRatio: '1', // Ensures a 1:1 aspect ratio
+                            display: 'grid',
+                            gridTemplateColumns: `repeat(${size}, 1fr)`, // Use size from state
+                            gridTemplateRows: `repeat(${size}, 1fr)`,
+                            gap: '1px',
+                            backgroundColor: '#ddd'
+                        }}
+                    >
+                        {grid.map((row, rowIndex) => (
+                            row.map((cell, colIndex) => (
+                                <div 
+                                    key={`${rowIndex}-${colIndex}`}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        backgroundColor: cell ? 'black' : 'white',
+                                        border: '1px solid #ccc',
+                                    }}
+                                />
+                            ))
+                        ))}
+                    </div>
+                    
+                    <div className="button-container" style={{ marginTop: '10px' }}>
                         <button className="button" onClick={isEvolving ? stopEvolution : startEvolution}>
                             {isEvolving ? "Stop Evolution" : "Start Evolution"}
                         </button>
                         <button className="button reset-btn" onClick={resetGrid}>Reset Grid</button>
-                        <button className="button" onClick={makeFormVisible} disabled={!tokenPresent} title={!tokenPresent ? "Login required to save patterns" : ""}>
-                                Save Pattern
-                        </button>
-                        <button className="button" onClick={makeRequestVisible} disabled={!tokenPresent} title={!tokenPresent ? "Login required to retrieve patterns" : ""}>
-                                Retrieve Pattern
-                        </button>
+                        <button className="button" onClick={makeFormVisible} disabled={!tokenPresent}>Save Pattern</button>
+                        <button className="button" onClick={makeRequestVisible} disabled={!tokenPresent}>Retrieve Pattern</button>
                         <button className="button" onClick={makeRegistrationVisible}>Register</button>
                         <button className="button" onClick={makeLoginVisible}>{token ? "Logout" : "Login"}</button>
                     </div>
                 </div>
-
+    
                 {/* Conditional form popups */}
                 {isFormVisible && (
                     <div className="popup-overlay">
@@ -340,6 +377,7 @@ const Game = () => {
             </div>
         </div>
     );
+    
     
 
 };

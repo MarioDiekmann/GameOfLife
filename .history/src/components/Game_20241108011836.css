@@ -1,21 +1,18 @@
+/* Set the html and body to occupy the full viewport height */
 html, body {
     min-height: 100vh;
-    max-height: 100vh;
-    
+    height: 100vh;
     margin: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+    overflow: hidden; /* Prevent scrolling */
 }
 
 #root, .Game-container {
-    min-height: 100vh;
-    max-height: 100vh;
-    
+    height: 100%;
     display: flex;
     flex-direction: column;
 }
 
+/* Center and control the size of the grid and buttons container */
 .grid-container {
     flex-grow: 1;
     overflow: auto;
@@ -23,44 +20,52 @@ html, body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    max-height: calc(100vh - 120px); /* Estimate based on banner and button heights */
+    max-height: 70vh; /* Limit grid height */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
 }
 
 .banner {
     background-color: black;
-    padding: 8px 16px;
+    padding: 10px 20px;
     text-align: center;
-    box-sizing: border-box;
-    margin: 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    border-radius: 5px;
 }
 
 .banner h1 {
     color: white;
-    font-size: 2em;
-    margin: 0;
-}
-
-/* Button container and styling */
-.button-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    padding: 5px;
+    font-size: 2.5em;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
     margin: 0;
 }
 
 .button {
     background-color: black;
     color: white;
-    padding: 8px 12px;
+    padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     margin: 5px;
-    font-size: 1em;
-    box-sizing: border-box;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
 }
 
+.button:hover {
+    background-color: #333;
+}
+
+.button:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
+/* Overlay for modals */
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -78,21 +83,6 @@ html, body {
     background: white;
     padding: 20px;
     border-radius: 8px;
-    width: 280px;
-}
-
-@media (max-width: 768px) {
-    .banner h1 {
-        font-size: 1.5em;
-    }
-
-    .button {
-        font-size: 0.9em;
-    }
-}
-
-.button:disabled {
-    background-color: #ccc;
-    color: #666;
-    cursor: not-allowed;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
 }

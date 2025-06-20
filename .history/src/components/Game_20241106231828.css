@@ -1,0 +1,63 @@
+/* Ensure the body and container take full height */
+body, .App {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Make the grid container flexibly adapt to screen size */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30px, 1fr)); /* Adjust based on your preferred cell size */
+    grid-template-rows: repeat(auto-fill, minmax(30px, 1fr));
+    width: 80vw;  /* Adjust width for responsiveness */
+    height: 80vh; /* Adjust height for responsiveness */
+    gap: 1px;  /* Optional: for space between cells */
+    justify-items: center;
+}
+
+/* Style for each cell */
+.cell {
+    width: 100%;
+    height: 100%;
+    background-color: lightgray; /* Example color */
+    border: 1px solid #ddd;
+}
+
+/* Make sure buttons stay in the same position and scale appropriately */
+.button-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button {
+    padding: 10px;
+    margin: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.reset-btn {
+    background-color: #f44336; /* Example color */
+}
+
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.banner {
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 2rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}

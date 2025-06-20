@@ -1,0 +1,113 @@
+/* Full height and zero scroll on body and root */
+html, body {
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+#root, .Game-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Banner style */
+.banner {
+    background-color: black;
+    padding: 5px;
+    text-align: center;
+    width: 100%;
+    height: 10vh; /* Fixed height */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.banner h1 {
+    color: white;
+    font-size: 1.8em; /* Smaller for better fit */
+    margin: 0;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+}
+
+/* Grid container with fixed height */
+.grid-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70vh; /* Allocating height */
+    overflow: auto;
+}
+
+/* Button container with fixed height */
+.button-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    height: 10vh; /* Fixed height */
+    margin: 0; /* Remove any extra margin */
+    padding: 0;
+}
+
+.button {
+    background-color: black;
+    color: white;
+    padding: 8px 16px; /* Reduced padding */
+    margin: 3px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+}
+
+.button:hover {
+    background-color: #333;
+}
+
+.button:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
+/* Overlay for modals */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 300px;
+}
+
+/* Responsive adjustments */
+@media (max-height: 800px) {
+    .banner h1 {
+        font-size: 1.5em;
+    }
+    .button {
+        padding: 6px 12px;
+    }
+}
+
+@media (max-height: 600px) {
+    .banner h1 {
+        font-size: 1.3em;
+    }
+    .button {
+        padding: 4px 10px;
+    }
+}

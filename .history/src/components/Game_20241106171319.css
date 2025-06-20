@@ -1,0 +1,97 @@
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's above other content */
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    z-index: 1001; /* Above the backdrop */
+}
+
+body.modal-open {
+    overflow: hidden; /* Prevent scrolling when modal is open */
+}
+
+.banner {
+    background-color: black;
+    padding: 10px 20px; /* Adjusted padding for a tighter fit */
+    display: inline-block; /* Makes the banner fit the text */
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+    border-radius: 5px; /* Optional: Adds rounded corners */
+}
+
+.banner h1 {
+    color: white;
+    font-size: 2.5em; /* Slightly reduced font size for better fit */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+    margin: 0; /* Removes default margin */
+}
+
+
+
+.button {
+    background-color: black; /* Same as the banner background */
+    color: white; /* White text for contrast */
+    padding: 10px 20px; /* Padding for a better touch target */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin: 5px; /* Space between buttons */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8); /* Similar text shadow as the banner */
+}
+
+.button:hover {
+    background-color: #333; /* Slightly lighter on hover */
+}
+
+.button:disabled {
+    background-color: #ccc; /* Grey background for disabled state */
+    color: #666; /* Lighter text color */
+    cursor: not-allowed; /* Change cursor to indicate it's disabled */
+    pointer-events: none; /* Prevent click events */
+}
+
+.button-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    position: absolute;
+    bottom: 125%; /* Position above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    white-space: nowrap;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.button-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+
+
+

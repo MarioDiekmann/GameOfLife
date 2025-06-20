@@ -22,8 +22,8 @@ const Game = () => {
     const [patternRequested, setPatternRequested] = useState(false);
     const [registrationRequested, setRegistrationRequested] = useState(false);
     const [loginRequested, setLoginRequested] = useState(false);
-    const initGrid = () => Array.from({ length: size }, () => Array(size).fill(false));
-    const [grid, setGrid] = useState(initGrid());
+    const initGrid = useCallback(() => Array.from({ length: size }, () => Array(size).fill(false)), [size]);
+    const [grid, setGrid] = useState(initGrid); // Use initGrid without calling it here
     const [tokenPresent, setTokenPresent] = useState(false);
 
     const previousGridRef = useRef(grid); // Reference to hold the previous grid 
@@ -65,19 +65,18 @@ const Game = () => {
 
     const renderGrid = () => {
         return grid.map((row, rowIndex) => (
-          <div key={rowIndex} className="row">
-            {row.map((cell, colIndex) => (
-              <Cell
-                key={`${rowIndex}-${colIndex}`}
-                isAlive={cell}
-                onClick={() => toggleCellState(rowIndex, colIndex)}
-                numResizes={numResizes}
-              />
-            ))}
-          </div>
+            <div key={rowIndex} className="row">
+                {row.map((cell, colIndex) => (
+                    <Cell
+                        key={`${rowIndex}-${colIndex}`}
+                        isAlive={cell}
+                        onClick={() => toggleCellState(rowIndex, colIndex)}
+                        numResizes = {numResizes}
+                    />
+                ))}
+            </div>
         ));
-      };
-      
+    };
 
     const countNeighboursAlive = useCallback((row, col) => {
         let count = 0;
@@ -280,6 +279,29 @@ const Game = () => {
         
     };
 
+    // Handle screen resizing dynamically
+    useEffect(() => {
+        const handleResize = () => {
+            const availableHeight = window.innerHeight;
+            const availableWidth = window.innerWidth;
+    
+            // Calculate grid size based on available space (height and width)
+            const calculatedSize = Math.min(
+                Math.floor(availableWidth / 50), // Fit width based on 50px per cell
+                Math.floor(availableHeight / 50) // Fit height based on 50px per cell
+            );
+    
+            if (calculatedSize !== size) {
+                setSize(calculatedSize); // Adjust grid size
+                setGrid(initGrid()); // Reinitialize the grid with the new size
+            }
+        };
+    
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Run on initial render
+    
+        return () => window.removeEventListener('resize', handleResize);
+    }, [size, initGrid]);
     
 
     return (
@@ -289,7 +311,6 @@ const Game = () => {
                 <div className="banner">
                     <h1>Game of Life</h1>
                 </div>
-                <br/>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexGrow: 1 }}>
                     {renderGrid()}
                     <div className="button-container">
@@ -297,12 +318,8 @@ const Game = () => {
                             {isEvolving ? "Stop Evolution" : "Start Evolution"}
                         </button>
                         <button className="button reset-btn" onClick={resetGrid}>Reset Grid</button>
-                        <button className="button" onClick={makeFormVisible} disabled={!tokenPresent} title={!tokenPresent ? "Login required to save patterns" : ""}>
-                                Save Pattern
-                        </button>
-                        <button className="button" onClick={makeRequestVisible} disabled={!tokenPresent} title={!tokenPresent ? "Login required to retrieve patterns" : ""}>
-                                Retrieve Pattern
-                        </button>
+                        <button className="button" onClick={makeFormVisible} disabled={!tokenPresent}>Save Pattern</button>
+                        <button className="button" onClick={makeRequestVisible} disabled={!tokenPresent}>Retrieve Pattern</button>
                         <button className="button" onClick={makeRegistrationVisible}>Register</button>
                         <button className="button" onClick={makeLoginVisible}>{token ? "Logout" : "Login"}</button>
                     </div>

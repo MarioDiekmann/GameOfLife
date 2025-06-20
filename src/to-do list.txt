@@ -1,12 +1,13 @@
 			Game-Of-Life to-do list:
 			
-- save pattern possible without "start evolution" (or only disable after "start evolution")
+- save pattern possible without "start evolution" (or only disable after "start evolution") DONE
 
-- resize cells after "expand grid"
+- resize cells after "expand grid" 															DONE
 
 - have a colleciton of some "famous" patterns with description that users can access (optional)
 
 - unlimited epochs ??? 
 
-- password encryption 
+- password encryption 																		DONE
 
+- automatically resitzing for different devices and screen sizes  							GIVE UP????

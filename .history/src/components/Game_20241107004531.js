@@ -65,19 +65,18 @@ const Game = () => {
 
     const renderGrid = () => {
         return grid.map((row, rowIndex) => (
-          <div key={rowIndex} className="row">
-            {row.map((cell, colIndex) => (
-              <Cell
-                key={`${rowIndex}-${colIndex}`}
-                isAlive={cell}
-                onClick={() => toggleCellState(rowIndex, colIndex)}
-                numResizes={numResizes}
-              />
-            ))}
-          </div>
+            <div key={rowIndex} className="row">
+                {row.map((cell, colIndex) => (
+                    <Cell
+                        key={`${rowIndex}-${colIndex}`}
+                        isAlive={cell}
+                        onClick={() => toggleCellState(rowIndex, colIndex)}
+                        numResizes = {numResizes}
+                    />
+                ))}
+            </div>
         ));
-      };
-      
+    };
 
     const countNeighboursAlive = useCallback((row, col) => {
         let count = 0;
@@ -297,12 +296,8 @@ const Game = () => {
                             {isEvolving ? "Stop Evolution" : "Start Evolution"}
                         </button>
                         <button className="button reset-btn" onClick={resetGrid}>Reset Grid</button>
-                        <button className="button" onClick={makeFormVisible} disabled={!tokenPresent} title={!tokenPresent ? "Login required to save patterns" : ""}>
-                                Save Pattern
-                        </button>
-                        <button className="button" onClick={makeRequestVisible} disabled={!tokenPresent} title={!tokenPresent ? "Login required to retrieve patterns" : ""}>
-                                Retrieve Pattern
-                        </button>
+                        <button className="button" onClick={makeFormVisible} disabled={!tokenPresent}>Save Pattern</button>
+                        <button className="button" onClick={makeRequestVisible} disabled={!tokenPresent}>Retrieve Pattern</button>
                         <button className="button" onClick={makeRegistrationVisible}>Register</button>
                         <button className="button" onClick={makeLoginVisible}>{token ? "Logout" : "Login"}</button>
                     </div>

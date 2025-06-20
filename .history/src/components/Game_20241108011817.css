@@ -1,0 +1,38 @@
+/* Ensure root-level elements occupy the entire viewport */
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* No page scroll */
+}
+
+.Game-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Full height */
+    overflow: hidden;
+}
+
+/* Limit grid size to avoid overflow on smaller screens */
+.grid-container {
+    flex-grow: 1;
+    max-height: calc(100vh - 150px); /* Adjust based on header/buttons */
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button-container {
+    flex-shrink: 0; /* Ensure buttons stay visible */
+    display: flex;
+    justify-content: center;
+}
+
+/* Popup overlays to cover the entire viewport */
+.popup-overlay {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

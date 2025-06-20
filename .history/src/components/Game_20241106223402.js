@@ -65,19 +65,18 @@ const Game = () => {
 
     const renderGrid = () => {
         return grid.map((row, rowIndex) => (
-          <div key={rowIndex} className="row">
-            {row.map((cell, colIndex) => (
-              <Cell
-                key={`${rowIndex}-${colIndex}`}
-                isAlive={cell}
-                onClick={() => toggleCellState(rowIndex, colIndex)}
-                numResizes={numResizes}
-              />
-            ))}
-          </div>
+            <div key={rowIndex} className="row">
+                {row.map((cell, colIndex) => (
+                    <Cell
+                        key={${rowIndex}-${colIndex}}
+                        isAlive={cell}
+                        onClick={() => toggleCellState(rowIndex, colIndex)}
+                        numResizes = {numResizes}
+                    />
+                ))}
+            </div>
         ));
-      };
-      
+    };
 
     const countNeighboursAlive = useCallback((row, col) => {
         let count = 0;
@@ -280,35 +279,30 @@ const Game = () => {
         
     };
 
-    
-
     return (
-        <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
-            <NavBar />
-            <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', overflowY: 'auto' }}>
+        <div style={{ display: 'flex', height: '100vh' }}>
+            <NavBar /> 
+            <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <div className="banner">
                     <h1>Game of Life</h1>
                 </div>
-                <br/>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexGrow: 1 }}>
-                    {renderGrid()}
-                    <div className="button-container">
-                        <button className="button" onClick={isEvolving ? stopEvolution : startEvolution}>
-                            {isEvolving ? "Stop Evolution" : "Start Evolution"}
-                        </button>
-                        <button className="button reset-btn" onClick={resetGrid}>Reset Grid</button>
-                        <button className="button" onClick={makeFormVisible} disabled={!tokenPresent} title={!tokenPresent ? "Login required to save patterns" : ""}>
-                                Save Pattern
-                        </button>
-                        <button className="button" onClick={makeRequestVisible} disabled={!tokenPresent} title={!tokenPresent ? "Login required to retrieve patterns" : ""}>
-                                Retrieve Pattern
-                        </button>
-                        <button className="button" onClick={makeRegistrationVisible}>Register</button>
-                        <button className="button" onClick={makeLoginVisible}>{token ? "Logout" : "Login"}</button>
-                    </div>
-                </div>
+                <br />
+                
+                {renderGrid()}
+                <div className="button-container">
+    <button className="button" onClick={isEvolving ? stopEvolution : startEvolution}>
+        {isEvolving ? "Stop Evolution" : "Start Evolution"}
+    </button>
+    <button className="button reset-btn" onClick={resetGrid}>Reset Grid</button>
+    {/*<div>EPOCHS: {epochs}</div>*/}
+    <button className="button" onClick={makeFormVisible} disabled={!tokenPresent}>Save Pattern</button>
+    <button className="button" onClick={makeRequestVisible} disabled={!tokenPresent}> Retrieve Pattern</button>
+    <button className="button" onClick={makeRegistrationVisible}>Register</button>
+    <button className="button" onClick={makeLoginVisible}>{token ? "Logout" : "Login"}</button>
+</div>
 
-                {/* Conditional form popups */}
+
+                {/* Show the form conditionally */}
                 {isFormVisible && (
                     <div className="popup-overlay">
                         <div className="popup-content">
@@ -319,7 +313,7 @@ const Game = () => {
                 {patternRequested && (
                     <div className="popup-overlay">
                         <div className="popup-content">
-                            <LoadPatternForm onSubmit={closeForm} dataHandling={retrievePattern} />
+                            <LoadPatternForm onSubmit={closeForm} dataHandling={retrievePattern}  />
                         </div>
                     </div>
                 )}
@@ -340,8 +334,6 @@ const Game = () => {
             </div>
         </div>
     );
-    
-
 };
 
 export default Game;

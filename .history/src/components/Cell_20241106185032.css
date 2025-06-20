@@ -1,0 +1,14 @@
+.cell {
+  display: inline-flex; /* Align cells next to each other */
+  border: 2px solid #ddd;
+  box-sizing: border-box; /* Ensure padding and border are included in width/height */
+  transition: background-color 0.3s;
+}
+
+.cell.alive {
+  background-color: black; /* Green for living cells */
+}
+
+.cell.dead {
+  background-color: white; /* Red for dead cells */
+}

@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv'); 
 const User = require('./models/User'); 
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken'); 
+const bcrypt = require('bcrypt');
+
 
 // Load environment variables
 dotenv.config();
@@ -29,6 +31,13 @@ db.once('open', () => {
 
 // Import the InitialPattern model
 const InitialPattern = require('./models/InitialPattern');
+
+const hashPassword = async (password)=>{
+	const saltRounds = 10; 
+	const salt = await bcrypt.genSalt(saltRounds);
+	const hash = await bcrypt.hash(password, salt);
+	return hash;
+	}
 
 // API route to save pattern
 app.post('/api/savePattern', async (req, res) => {
@@ -86,14 +95,16 @@ app.get('/api/displayPattern/:name/:userId', async (req, res) => {
 
 app.post('/api/register', async (req, res) => { // Add the leading slash in the route path
   try {
-    const { username, password, joindate } = req.body; // Use req.body instead of req.params
+    const plainPassword = req.body.password ;
+	const hashedPassword = await hashPassword(plainPassword);
+	const { username, joindate } = req.body; // Use req.body instead of req.params
 
     // Check if the user already exists
     const existingUser = await User.findOne({ username: username });
 
     if (!existingUser) {
       // Create a new user
-      const newUser = new User({ username, password, joindate });
+      const newUser = new User({ username, password:hashedPassword, joindate });
       await newUser.save();
 
       return res.status(201).json({ message: 'User created successfully' });
@@ -109,15 +120,21 @@ app.post('/api/register', async (req, res) => { // Add the leading slash in the 
 
 app.post('/api/login', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password: plainPassword } = req.body;
 
-    if (!username || !password) {
+    if (!username || !plainPassword) {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
-    const user = await User.findOne({ username, password });
+    const user = await User.findOne({ username });
 
     if (!user) {
+      return res.status(401).json({ error: 'Invalid Username or Password' });
+    }
+
+    const isPasswordValid = await bcrypt.compare(plainPassword, user.password);
+    
+    if (!isPasswordValid) {
       return res.status(401).json({ error: 'Invalid Username or Password' });
     }
 
@@ -130,7 +147,8 @@ app.post('/api/login', async (req, res) => {
     res.status(200).json({ message: 'Login successful', token: token });
 
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error during login:', error);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 

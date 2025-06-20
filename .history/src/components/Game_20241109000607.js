@@ -293,20 +293,41 @@ const Game = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexGrow: 1 }}>
                     {renderGrid()}
                     <div className="button-container">
-                        <button className="button" onClick={isEvolving ? stopEvolution : startEvolution}>
-                            {isEvolving ? "Stop Evolution" : "Start Evolution"}
-                        </button>
-                        <button className="button reset-btn" onClick={resetGrid}>Reset Grid</button>
-                        <button className="button" onClick={makeFormVisible} disabled={!tokenPresent} title={!tokenPresent ? "Login required to save patterns" : ""}>
-                                Save Pattern
-                        </button>
-                        <button className="button" onClick={makeRequestVisible} disabled={!tokenPresent} title={!tokenPresent ? "Login required to retrieve patterns" : ""}>
-                                Retrieve Pattern
-                        </button>
-                        <button className="button" onClick={makeRegistrationVisible}>Register</button>
-                        <button className="button" onClick={makeLoginVisible}>{token ? "Logout" : "Login"}</button>
-                    </div>
-                </div>
+    <button 
+        className="button" 
+        onClick={isEvolving ? stopEvolution : startEvolution}>
+        {isEvolving ? "Stop Evolution" : "Start Evolution"}
+    </button>
+    <button 
+        className="button reset-btn" 
+        onClick={resetGrid}>
+        Reset Grid
+    </button>
+    <button 
+        className="button" 
+        onClick={makeFormVisible} 
+        disabled={!tokenPresent} 
+        title={!tokenPresent ? "Login required to save patterns" : ""}>
+        Save Pattern
+    </button>
+    <button 
+        className="button" 
+        onClick={makeRequestVisible} 
+        disabled={!tokenPresent} 
+        title={!tokenPresent ? "Login required to retrieve patterns" : ""}>
+        Retrieve Pattern
+    </button>
+    <button 
+        className="button" 
+        onClick={makeRegistrationVisible}>
+        Register
+    </button>
+    <button 
+        className="button" 
+        onClick={makeLoginVisible}>
+        {token ? "Logout" : "Login"}
+    </button>
+</div>
 
                 {/* Conditional form popups */}
                 {isFormVisible && (
