@@ -1,27 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
-/**
- * InputForm Component
- * 
- * Allows the user to save a pattern by providing a name. On submission, 
- * the form data is sent to the server along with the current pattern 
- * and user ID (extracted from a JWT token). Also supports cancellation via `onSubmit` prop.
- * 
- * Props:
- * - pattern: Array or object representing the pattern to be saved.
- * - onSubmit: Function to be called when the form is submitted or canceled.
- */
-const InputForm = ({ pattern, onSubmit }) => {
-  // Local state for form input (pattern name)
+const InputForm = ({ pattern, onSubmit }) => {  // Add onSubmit prop to close form
   const [formData, setFormData] = useState({
     Name: ''
   });
 
-  /**
-   * Updates form data state when the user types into the input field.
-   */
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -30,31 +15,19 @@ const InputForm = ({ pattern, onSubmit }) => {
     });
   };
 
-  /**
-   * Handles form submission.
-   * - Extracts the JWT token from local storage and decodes it.
-   * - Constructs the final data object including the name, pattern, timestamp, and user ID.
-   * - Sends a POST request to save the pattern.
-   * - Calls `onSubmit` to close the form on success.
-   */
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('authToken'); 
     const decoded = jwtDecode(token);
-
     const finalFormData = {
       Name: formData.Name,
-      Pattern: pattern,
+      Pattern: pattern,  // Pass the pattern from props
       CreatedAt: new Date().toISOString(),
       User: decoded.userId
     };
 
     try {
-      console.log('Submitting:', finalFormData);
-
       const response = await axios.post('http://localhost:5000/api/savePattern', finalFormData);
-
       if (response.status === 201) {
         console.log('Form submitted successfully');
         onSubmit(); // Close the form after successful submission
