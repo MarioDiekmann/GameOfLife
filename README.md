@@ -1,6 +1,7 @@
 # Conway's Game of Life – React Fullstack App
 
-[![Live Demo](https://gameoflife-frontend.onrender.com/)  
+[🔗 Zur Live-Demo](https://gameoflife-frontend.onrender.com)
+ 
 *→ Klicke oben auf "Live Demo", um das Spiel sofort auszuprobieren.*
 
 ---
