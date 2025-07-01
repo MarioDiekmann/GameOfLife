@@ -3,8 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Game from './components/Game';
 import Overview from './pages/Overview';
 import './App.css';
-import {AuthProvider} from './AuthContext';  
-import Patterns from './pages/Patterns';
+import {AuthProvider} from './AuthContext'; 
 
 
 function App() {
@@ -15,7 +14,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Game/>} /> 
           <Route path="/Overview" element={<Overview/>} />
-          <Route path="/Patterns" element={<Patterns/>} />
         </Routes>
       </div>
     </Router>

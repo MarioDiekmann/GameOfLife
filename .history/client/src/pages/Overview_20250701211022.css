@@ -1,0 +1,42 @@
+/* Overview.css */
+.overview-container {
+    display: flex;
+    height: 100vh;
+}
+
+.navbar {
+    width: 20%;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    min-height: 100%;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  height: 100%;
+}
+
+.banner h1 {
+    color: white;
+    font-size: 1.5em;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    margin: 0;
+}
+
+.text-content {
+  margin-top: 20px;
+  color: #333;
+  text-align: center;
+  font-size: 1.2em;
+  overflow-y: auto;
+  max-height: 80vh; /* Beispiel: max Höhe für Textbereich */
+  width: 100%;
+}
