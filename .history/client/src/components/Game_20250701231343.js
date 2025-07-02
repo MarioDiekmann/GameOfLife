@@ -10,7 +10,7 @@ import LoginForm from "./LoginForm";
 import { AuthContext } from '../AuthContext';
 
 const Game = () => {
-    const startingsize = 25;
+    const startingsize = 35;
 
     const [size, setSize] = useState(startingsize);
     const [epochs, setEpochs] = useState(0);
